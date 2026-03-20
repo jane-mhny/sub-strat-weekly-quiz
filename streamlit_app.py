@@ -23,7 +23,11 @@ with st.sidebar:
         # Upload New Quiz
         uploaded_file = st.file_uploader("Upload Weekly JSON Quiz", type=['json'])
         if uploaded_file is not None:
-            st.session_state.quiz_data = json.load(uploaded_file)
+            raw_data = json.load(uploaded_file)
+            if isinstance(raw_data, str):
+                st.session_state.quiz_data = json.loads(raw_data)
+            else:
+                st.session_state.quiz_data = raw_data
             st.info("New Quiz Loaded!")
 
         # Reset Leaderboard
