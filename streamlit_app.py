@@ -46,20 +46,23 @@ else:
     if team_name:
         st.divider()
         score = 0
+        # This handles the specific "folder" structure in your JSON
+        quiz_list = st.session_state.quiz_data[0]['questions']
+        
         with st.form("quiz_form"):
-            # This loops through your JSON questions automatically
-            for i, q in enumerate(st.session_state.quiz_data):
+            for i, q in enumerate(quiz_list):
                 st.write(f"**Q{i+1}: {q['question']}**")
+                # We show the options text directly
                 answer = st.radio("Select an answer:", q['options'], key=f"q{i}")
                 if answer == q['answer']:
                     score += 1
             
-            submitted = st.form_submit_state = st.form_submit_button("Submit Results")
+            submitted = st.form_submit_button("Submit Results")
             
             if submitted:
                 st.session_state.leaderboard[team_name] = score
                 st.balloons()
-                st.success(f"Great job {team_name}! You scored {score}/{len(st.session_state.quiz_data)}")
+                st.success(f"Great job {team_name}! You scored {score}/{len(quiz_list)}")
 
 # --- 4. THE LEADERBOARD ---
 st.divider()
